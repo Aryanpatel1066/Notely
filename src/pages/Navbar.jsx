@@ -25,6 +25,8 @@ import MoveToInboxIcon from '@mui/icons-material/MoveToInbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { NavLink } from 'react-router-dom';
+import AppRouter from '../components/AppRouter';
 import "../App.css";
 
 const drawerWidth = 240;
@@ -69,11 +71,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Navbar() {
+export default function Navbar({ drawerOpen, handleDrawerToggle }) {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [drawerOpen, setDrawerOpen] = React.useState(true);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -93,10 +94,6 @@ export default function Navbar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -243,6 +240,8 @@ export default function Navbar() {
             width: drawerOpen ? drawerWidth : collapsedDrawerWidth,
             boxSizing: 'border-box',
             marginTop: "64px",
+            border:"3px solid pink",
+            display:"inline-block",
             transition: theme.transitions.create('width', {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.enteringScreen,
@@ -256,15 +255,17 @@ export default function Navbar() {
         <Divider />
         <List>
           {['Notes', 'Reminders', 'Archive', 'Trash'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon style={{ color: "blue" }}>
-                {index === 0 && <NoteAltIcon />}
-                {index === 1 && <NotificationsIcon />}
-                {index === 2 && <MoveToInboxIcon />}
-                {index === 3 && <DeleteIcon />}
-              </ListItemIcon>
-              {drawerOpen && <ListItemText primary={text} />}
-            </ListItem>
+            <NavLink to={`/${text.toLowerCase()}`} key={text} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <ListItem button>
+                <ListItemIcon style={{ color: "blue" }}>
+                  {index === 0 && <NoteAltIcon />}
+                  {index === 1 && <NotificationsIcon />}
+                  {index === 2 && <MoveToInboxIcon />}
+                  {index === 3 && <DeleteIcon />}
+                </ListItemIcon>
+                {drawerOpen && <ListItemText primary={text} />}
+              </ListItem>
+            </NavLink>
           ))}
         </List>
       </Drawer>
